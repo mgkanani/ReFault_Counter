@@ -1,0 +1,11 @@
+3 functions :-
+1) Insert :- called when a page is evicted from page cache
+2) delete :- called on every time interval to delete older entries.
+3) Increment counter :- Called when a page is not found into page cache.
+
+Experiments:-
+1) Correctness
+2) Misc.
+3) Other statistic observations like total amount of memory would be consumed in worst case.
+	(Average disk access time(and maximum number of pages can be accessed in worst case within x-seconds) + per page memory consumed by our structure)
+

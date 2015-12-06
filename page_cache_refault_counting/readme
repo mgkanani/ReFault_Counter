@@ -1,0 +1,42 @@
+directory structure:-
+	./patch/patch	-> patch file to be applied on linux source
+	./module	-> module used to enable refault counting
+	./report	-> explains the methodology used and working of this project.
+	./experiments	-> contains the required c-files and scripts for performing experiments.
+
+apply patch:-
+	# cd to linux source tree directory and use below command.
+	patch -p1 < path_to_this_directory/patch/patch
+compile and insert module:-
+	sudo dmesg -C # for clearing dmesg output.
+	make
+	sudo insmod ./proj.ko
+unloading module:-
+	sudo rmmod proj
+	dmesg |less # for observing the output.
+clearing the page cache memory :-
+	sudo sh -c 'echo 1 >/proc/sys/vm/drop_caches'
+
+performing experiments:-
+	1)/experiments/test1 :-
+		./create_files_t1.sh
+		sudo dmesg -C
+		sudo sh -c 'echo 1 >/proc/sys/vm/drop_caches'
+		[load module]
+		./script.sh
+		[unload module]
+		dmesg |less
+	test1.log contains the output for this experiment.
+
+	2)experiments/test2 :-
+		#create a >=10MB sized file named as readfile_13s.txt then run below commands
+		gcc readfile_13s.c
+		sudo dmesg -C
+                sudo sh -c 'echo 1 >/proc/sys/vm/drop_caches'
+		./a.out
+                [load module]
+                sudo sh -c 'echo 1 >/proc/sys/vm/drop_caches'
+                ./script.sh # stop this script when one iteration of 160MB or larger file's reading-writing performed
+                [unload module]
+                dmesg |less
+
